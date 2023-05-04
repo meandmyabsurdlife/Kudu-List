@@ -11,10 +11,12 @@ const HomeScreen = () => {
     const [taskItems, setTaskItems] = useState([]);
 
     const handleAddTask = () => {
-        setTaskItems([...taskItems, task])
-        setTask(null);
+        if (task && task.trim() !== '') {
+          setTaskItems([...taskItems, task.trim()]);
+          setTask('');
+        }
     }
-
+        
     {/*complete task */}
     const completeTask = (index) => {
         let itemsCopy = [...taskItems];
@@ -112,11 +114,14 @@ const styles = StyleSheet.create ({
         width: 60,
         height: 60,
         borderRadius: 60,
-        backgroundColor: 'white',
+        backgroundColor: '#FAC846',
         alignItems: 'center',
         justifyContent: 'center',
         borderColor: '#C0C0C0',
         borderWidth: 1,
     },
-    addText: {},
+    addText: {
+        fontSize: 30,
+        fontWeight: 300
+    },
 })
