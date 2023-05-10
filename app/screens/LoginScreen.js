@@ -1,12 +1,13 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
-import React from 'react'
-import { auth, firebase } from '../../firebase'
-import { FontAwesome } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 
-//https://github.com/itzpradip/react-navigation-v6-mix
+import { auth } from '../../firebase';
+import Logo from '../components/Logo';
+
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -21,30 +22,19 @@ const LoginScreen = () => {
       .then(userCredential => {
         const user = userCredential.user;
         console.log('Logged in with:', user.email)
+
+        // Navigasi ke halaman utama setelah login berhasil
+        navigation.navigate('BottomTab');
       })
       .catch(error => alert(error.message))
   }
 
-  const handleSignUp = () => {
-    // Handle sign up
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        const user = userCredential.user;
-        console.log('Signed up with:',user.email)
-      })
-      .catch(error => alert(error.message))
-  }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      {/*
-      <Image
-          source={require('../assets/Logo ke-5@2x.png')}
-          style={styles.image}
-        />
-      */}
-      <Text style={styles.titleText}>Hi, Welcome !</Text>
+      {/* Back Button */}
+      <Logo/>
+      <Text style={styles.titleText}>Hi, Welcome Back!</Text>
       
       <View style={styles.inputContainer}>
         <TextInput
@@ -52,6 +42,7 @@ const LoginScreen = () => {
             placeholder="Email"
             value={email}
             placeholderTextColor="#003f5c"
+            left={<TextInput.Icon icon="email"/>}
             onChangeText={(text) => setEmail(text)}
         />
 
@@ -60,21 +51,25 @@ const LoginScreen = () => {
             placeholder="Password"
             value={password}
             placeholderTextColor="#003f5c"
+            left={<TextInput.Icon icon="lock"/>}
             onChangeText={(text) => setPassword(text)}
             secureTextEntry={true}
         />
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+        <TouchableOpacity
+        onPress={handleLogin}
+        style={styles.button}
+        >
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
+      </View>
 
-        <TouchableOpacity
-          onPress={handleSignUp}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonOutlineText}>Sign Up</Text>
+      <View style={styles.rowContainer}>
+        <Text>Don't have any account? </Text>
+        <TouchableOpacity onPress={() => navigation.replace('Signup')}>
+          <Text style={styles.link}>Sign up</Text>
         </TouchableOpacity>
       </View>
 
@@ -96,7 +91,6 @@ const styles = StyleSheet.create ({
   image:{
     height:'200',
     width:'200',
-
   },
   titleText:{
     fontSize: 32,
@@ -107,8 +101,6 @@ const styles = StyleSheet.create ({
   }, 
   inputText: {
     backgroundColor: 'white',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
   },
@@ -125,20 +117,17 @@ const styles = StyleSheet.create ({
     borderRadius: 10,
     alignItems: 'center',
   },
-  buttonOutline: {
-    backgroundColor: 'white',
-    marginTop: 5,
-    borderColor: '#FAC846',
-    borderWidth: 2,
-  },
   buttonText: {
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
   },
-  buttonOutlineText: {
+  rowContainer: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  link: {
+    fontWeight: 'bold',
     color: '#FAC846',
-    fontWeight: '700',
-    fontSize: 16,
   },
 })
