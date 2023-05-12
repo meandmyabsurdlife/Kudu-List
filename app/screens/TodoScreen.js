@@ -12,7 +12,12 @@ const dropdownItems = [
   ]
   
 const TodoScreen = () => {
-    const [task, setTask] = useState();
+    const [task, setTask] = useState({
+        title: '',
+        description: '',
+        priority: '',
+        done: false
+      });
     const [taskItems, setTaskItems] = useState([]);
 
     const handleAddTask = () => {

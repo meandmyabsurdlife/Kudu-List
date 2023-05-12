@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import TodoScreen from '../screens/TodoScreen';
 import ReminderScreen from '../screens/ReminderScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import TodoFormScreen from '../screens/TodoFormScreen';
 
 //https://github.com/bizzara/bdapp
 
@@ -28,7 +29,7 @@ const BottomTab = () => {
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
         name="Todo"
-        component={TodoScreen}
+        component={TodoFormScreen}
       />
       <Tab.Screen
         name="Reminder"
